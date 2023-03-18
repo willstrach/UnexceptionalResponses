@@ -1,9 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>UnexceptionalResponses</PackageId>
+    <Title>UnexceptionalResponses</Title>
+    <Company>willstrach</Company>
+    <Authors>willstrach</Authors>
+    <Description>Easy to use response classes allowing you to communicate errors without throwing exceptions.</Description>
+    <PackageProjectUrl>https://github.com/willstrach/UnexceptionalResponses</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/willstrach/UnexceptionalResponses</RepositoryUrl>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0-rc1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
