@@ -3,6 +3,129 @@
 public class RequestResponseTests
 {
     [Fact]
+    public void Ok_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Ok(responseContent);
+
+        // Assert
+        Assert.True(response.IsSuccessful);
+    }
+
+    [Fact]
+    public void Ok_WithArbitraryContent_ShouldHaveCorrectStatus()
+    {
+        // Arrange
+        var expectedStatus = ResponseStatus.Ok;
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Ok(responseContent);
+
+        // Assert
+        Assert.Equal(expectedStatus.Message, response.Status.Message);
+        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+    }
+
+    [Fact]
+    public void Ok_WithArbitraryContent_ShouldHaveCorrectContent()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Ok(responseContent);
+
+        // Assert
+        Assert.Equal(responseContent, response.Content);
+    }
+
+    [Fact]
+    public void Created_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Created(responseContent);
+
+        // Assert
+        Assert.True(response.IsSuccessful);
+    }
+
+    [Fact]
+    public void Created_WithArbitraryContent_ShouldHaveCorrectStatus()
+    {
+        // Arrange
+        var expectedStatus = ResponseStatus.Created;
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Created(responseContent);
+
+        // Assert
+        Assert.Equal(expectedStatus.Message, response.Status.Message);
+        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+    }
+
+    [Fact]
+    public void Created_WithArbitraryContent_ShouldHaveCorrectContent()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Created(responseContent);
+
+        // Assert
+        Assert.Equal(responseContent, response.Content);
+    }
+
+    [Fact]
+    public void Accepted_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Accepted(responseContent);
+
+        // Assert
+        Assert.True(response.IsSuccessful);
+    }
+
+    [Fact]
+    public void Accepted_WithArbitraryContent_ShouldHaveCorrectStatus()
+    {
+        // Arrange
+        var expectedStatus = ResponseStatus.Accepted;
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Accepted(responseContent);
+
+        // Assert
+        Assert.Equal(expectedStatus.Message, response.Status.Message);
+        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+    }
+
+    [Fact]
+    public void Accepted_WithArbitraryContent_ShouldHaveCorrectContent()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = RequestResponse.Accepted(responseContent);
+
+        // Assert
+        Assert.Equal(responseContent, response.Content);
+    }
+
+    [Fact]
     public void Success_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
     {
         // Arrange
@@ -42,7 +165,7 @@ public class RequestResponseTests
         // Assert
         Assert.Equal(responseStatus, response.Status);
     }
-
+       
     [Fact]
     public void Success_WithArbitraryContent_ShouldHaveNoErrors()
     {

@@ -2,7 +2,7 @@
 
 public interface IRequestResponse
 {
-    bool IsSuccessful { get; }
-    IResponseStatus Status { get; }
-    IRequestError[] Errors { get; }
+    bool IsSuccessful { get; set; }
+    IResponseStatus Status { get; set; }
+    IRequestError[] Errors { get; set; }
 }
