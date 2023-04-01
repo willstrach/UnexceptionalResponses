@@ -1,5 +1,6 @@
 ﻿namespace UnexceptionalResponses.UnitTests;
 
+[Obsolete("Tests kept for backwards compatibility")]
 public class RequestResponseBuilderTests
 {
     [Fact]
@@ -7,7 +8,7 @@ public class RequestResponseBuilderTests
     {
         // Arrange
         var responseStatus = ResponseStatus.Invalid;
-        var errors = new RequestError[] { };
+        var errors = Array.Empty<RequestError>();
 
         // Act
         var response = RequestResponseBuilder.InvokeStaticMethodOf<RequestResponse<ArbitraryResponseContent>>(nameof(RequestResponse<object>.Failure), responseStatus, errors);
@@ -15,8 +16,8 @@ public class RequestResponseBuilderTests
         // Assert
         Assert.IsType<RequestResponse<ArbitraryResponseContent>>(response);
         Assert.False(response.IsSuccessful);
-        Assert.Equal(responseStatus, response.Status);
-        Assert.Equal(errors, response.Errors);
+        response.Status.Should().BeEquivalentTo(responseStatus);
+        response.Errors.Should().BeEquivalentTo(errors);
         Assert.Null(response.Content);
     }
 
@@ -31,11 +32,11 @@ public class RequestResponseBuilderTests
         var response = RequestResponseBuilder.InvokeStaticMethodOf<RequestResponse<ComparableResponseContent>>(nameof(RequestResponse<object>.Success), responseStatus, responseContent);
 
         // Assert
-        Assert.IsType<RequestResponse<ComparableResponseContent>>(response);
-        Assert.True(response.IsSuccessful);
-        Assert.Equal(responseStatus, response.Status);
-        Assert.Empty(response.Errors);
-        Assert.Equal(responseContent, response.Content);
+        response.Should().BeOfType<RequestResponse<ComparableResponseContent>>();
+        response.IsSuccessful.Should().BeTrue();
+        response.Status.Should().BeEquivalentTo(responseStatus);
+        response.Errors.Should().BeEmpty();
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
@@ -43,17 +44,17 @@ public class RequestResponseBuilderTests
     {
         // Arrange
         var responseStatus = ResponseStatus.Invalid;
-        var errors = new RequestError[] { };
+        var errors = Array.Empty<RequestError>();
 
         // Act
         var response = RequestResponseBuilder.InvokeStaticMethodOf<PagedRequestResponse<ArbitraryResponseContent>>(nameof(RequestResponse<object>.Failure), responseStatus, errors);
 
         // Assert
-        Assert.IsType<PagedRequestResponse<ArbitraryResponseContent>>(response);
-        Assert.False(response.IsSuccessful);
-        Assert.Equal(responseStatus, response.Status);
-        Assert.Equal(errors, response.Errors);
-        Assert.Null(response.Content);
+        response.Should().BeOfType<PagedRequestResponse<ArbitraryResponseContent>>();
+        response.IsSuccessful.Should().BeFalse();
+        response.Status.Should().BeEquivalentTo(responseStatus);
+        response.Errors.Should().BeEquivalentTo(errors);
+        response.Content.Should().BeNull();
     }
 
     [Fact]
@@ -68,11 +69,11 @@ public class RequestResponseBuilderTests
         var response = RequestResponseBuilder.InvokeStaticMethodOf<PagedRequestResponse<ComparableResponseContent>>(nameof(RequestResponse<object>.Success), responseStatus, responseContent, pageMeta);
 
         // Assert
-        Assert.IsType<PagedRequestResponse<ComparableResponseContent>>(response);
-        Assert.True(response.IsSuccessful);
-        Assert.Equal(responseStatus, response.Status);
-        Assert.Empty(response.Errors);
-        Assert.Equal(responseContent, response.Content);
+        response.Should().BeOfType<PagedRequestResponse<ComparableResponseContent>>();
+        response.IsSuccessful.Should().BeTrue();
+        response.Status.Should().BeEquivalentTo(responseStatus);
+        response.Errors.Should().BeEmpty();
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
@@ -80,17 +81,17 @@ public class RequestResponseBuilderTests
     {
         // Arrange
         var responseStatus = ResponseStatus.Invalid;
-        var errors = new RequestError[] { };
+        var errors = Array.Empty<RequestError>();
 
         // Act
         var response = RequestResponseBuilder.CreateFailedInstanceOf<RequestResponse<ArbitraryResponseContent>>(responseStatus, errors);
 
         // Assert
-        Assert.IsType<RequestResponse<ArbitraryResponseContent>>(response);
-        Assert.False(response.IsSuccessful);
-        Assert.Equal(responseStatus, response.Status);
-        Assert.Equal(errors, response.Errors);
-        Assert.Null(response.Content);
+        response.Should().BeOfType<RequestResponse<ArbitraryResponseContent>>();
+        response.IsSuccessful.Should().BeFalse();
+        response.Status.Should().BeEquivalentTo(responseStatus);
+        response.Errors.Should().BeEquivalentTo(errors);
+        response.Content.Should().BeNull();
     }
 
     [Fact]
@@ -98,17 +99,17 @@ public class RequestResponseBuilderTests
     {
         // Arrange
         var responseStatus = ResponseStatus.Invalid;
-        var errors = new RequestError[] { };
+        var errors = Array.Empty<RequestError>();
 
         // Act
         var response = RequestResponseBuilder.CreateFailedInstanceOf<PagedRequestResponse<ArbitraryResponseContent>>(responseStatus, errors);
 
         // Assert
-        Assert.IsType<PagedRequestResponse<ArbitraryResponseContent>>(response);
-        Assert.False(response.IsSuccessful);
-        Assert.Equal(responseStatus, response.Status);
-        Assert.Equal(errors, response.Errors);
-        Assert.Null(response.Content);
+        response.Should().BeOfType<PagedRequestResponse<ArbitraryResponseContent>>();
+        response.IsSuccessful.Should().BeFalse();
+        response.Status.Should().BeEquivalentTo(responseStatus);
+        response.Errors.Should().BeEquivalentTo(errors);
+        response.Content.Should().BeNull();
     }
 
     class ArbitraryResponseContent { }

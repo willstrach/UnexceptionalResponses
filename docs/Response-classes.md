@@ -8,10 +8,10 @@ The request response class allows arbitrary content to be passed alongside addit
 ```csharp
 public class RequestResponse<TContent> : IRequestResponse
 {
-    public bool IsSuccessful { get; }
-    public IResponseStatus Status { get; }
-    public IRequestError[] Errors { get; }
-    public TContent? Content { get; }
+    public bool IsSuccessful { get; set; }
+    public IResponseStatus Status { get; set; }
+    public IRequestError[] Errors { get; set; }
+    public TContent? Content { get; set; }
 
    // ...
 }
@@ -25,22 +25,23 @@ public class RequestResponse<TContent> : IRequestResponse
 ### Intantiating the class
 While the class does have a public constructor, it is recommended that you use one of the static provided static methods.
 
-For creating successful instances of the class, use the `Success` method:
+For creating successful instances of the class, use the `Ok`, `Created`, or `Accepted` methods:
 ```csharp
-var response = RequestResponse<ResponseContent>.Success(ResponseStatus.Ok, anInstanceOfResponseContent);
+var okResponse = RequestResponse.Ok(anInstanceOfResponseContent);
+var createdResponse = RequestResponse.Created(anInstanceOfResponseContent);
+var acceptedResponse = RequestResponse.Accepted(anInstanceOfResponseContent);
 ```
 > **Note:** This helper does not allow errors when creating a successful result. The errors will be set to `Array.Empty<IRequestError>()`
 
-Failed instances of the class can also be created using the `Falure` method:
-```csharp
-var someErrors = new RequestError[]
-{
-    new("An error message", "TheLocation"),
-}
+To use a different response status, the `WithSuccessfulStatus` or `WithFailedStatus` can be used.
 
-var response = RequestResponse<ResponseContent>.Failure(ResponseStatus.Invalid, someErrors);
+```csharp
+var successfulResponse = RequestResponse.WithSuccessfulStatus(myCustomStatus, anInstanceOfResponseContent);
+
+var successfulResponse = RequestResponse.WithFailedStatus(myCustomStatus, anInstanceOfResponseContent);
 ```
-> **Note:** This helper does not allow content when creating a failed result. The content will be set to `null`
+
+> **Note:** The `WithFailedStatus` helper does not allow content when creating a failed result. The content will be set to `null`
 
 ## PagedRequestResponse\<TContent>
 The paged request response class builds upon the request response class, providing extra information for paged requests.
@@ -48,11 +49,11 @@ The paged request response class builds upon the request response class, providi
 ```csharp
 public class PagedRequestResponse<TContent> : IRequestResponse
 {
-    public bool IsSuccessful { get; }
-    public IResponseStatus Status { get; }
-    public IRequestError[] Errors { get; }
-    public TContent? Content { get; }
-    public PageMeta PageMeta { get; }
+    public bool IsSuccessful { get; set; }
+    public IResponseStatus Status { get; set; }
+    public IRequestError[] Errors { get; set; }
+    public TContent? Content { get; set; }
+    public PageMeta PageMeta { get; set; }
 
    // ...
 }
@@ -70,28 +71,23 @@ public class PageMeta
 ### Intantiating the class
 While the class does have a public constructor, it is recommended that you use one of the static provided static methods.
 
-For creating successful instances of the class, use the `Success` method:
+For creating successful instances of the class, use the `Ok`, `Created`, or `Accepted` methods:
 ```csharp
-var response = PagedRequestResponse<ResponseContent>.Success(ResponseStatus.Ok, anInstanceOfResponseContent, pageMeta);
+var okResponse = PagedRequestResponse.Ok(anInstanceOfResponseContent, pageMeta);
+var createdResponse = PagedRequestResponse.Created(anInstanceOfResponseContent, pageMeta);
+var acceptedResponse = PagedRequestResponse.Accepted(anInstanceOfResponseContent, pageMeta);
 ```
 > **Note:** This helper does not allow errors when creating a successful result. The errors will be set to `Array.Empty<IRequestError>()`
 
-Failed instances of the class can also be created using the `Falure` method:
-```csharp
-var someErrors = new RequestError[]
-{
-    new("An error message", "TheLocation"),
-}
+To use a different response status, the `WithSuccessfulStatus` or `WithFailedStatus` can be used.
 
-var response = PagedRequestResponse<ResponseContent>.Failure(ResponseStatus.Invalid, someErrors);
+```csharp
+var successfulResponse = PagedRequestResponse.WithSuccessfulStatus(myCustomStatus, anInstanceOfResponseContent, pageMeta);
+
+var successfulResponse = PagedRequestResponse.WithFailedStatus(myCustomStatus, anInstanceOfResponseContent);
 ```
-> **Note:** This helper does not allow content or pageMeta when creating a failed result. The content will be set to `null` and the page meta values to `0`
+
+> **Note:** The `WithFailedStatus` helper does not allow content when creating a failed result. The content will be set to `null`
 
 ## Implementing your own response class
-This package can be used as a basis for creating your own response classes. To use the [`ResponseBuilder` methods](./Response-builders.md), all response classes must implement `IRequestResponse` and implement the static method `Failure` with the following parameters:
-```csharp
-public static RequestResponse<TContent> Failure(IResponseStatus responseStatus, RequestError[] errors)
-{
-    // ...
-}
-```
+This package can be used as a basis for creating your own response classes. To use the [`CreateUnsuccessfulInstanceOf` methods](./Response-builders.md), all response classes must implement `IRequestResponse` and have a public parameterless constructor.

@@ -21,7 +21,7 @@ public class UnsuccessfulBuildersTests
         var response = CreateUnsuccessfulInstanceOf<RequestResponse<ArbitraryContent>>.WithStatus(status, errors);
 
         // Assert
-        Assert.False(response.IsSuccessful);
+        response.IsSuccessful.Should().BeFalse();
     }
 
     [Fact]
@@ -39,8 +39,7 @@ public class UnsuccessfulBuildersTests
         var response = CreateUnsuccessfulInstanceOf<RequestResponse<ArbitraryContent>>.WithStatus(status, errors);
 
         // Assert
-        Assert.Equal(status.Message, response.Status.Message);
-        Assert.Equal(status.StatusCode, response.Status.StatusCode);
+        response.Status.Should().BeEquivalentTo(status);
     }
 
     [Fact]
@@ -63,8 +62,8 @@ public class UnsuccessfulBuildersTests
         var response = CreateUnsuccessfulInstanceOf<RequestResponse<ArbitraryContent>>.WithStatus(status, errors);
 
         // Assert
-        Assert.NotEmpty(response.Errors);
-        Assert.Equal(errors, response.Errors);
+        response.Errors.Should().NotBeEmpty();
+        response.Errors.Should().BeEquivalentTo(errors);
     }
 
     public static IEnumerable<object[]> GetStatusBuilders()
@@ -91,13 +90,13 @@ public class UnsuccessfulBuildersTests
     {
         // Arrange
         var errors = Array.Empty<IRequestError>();
+        _ = expectedStatus;
 
         // Act
         var response = method.Invoke(null, new object[] { errors }) as IRequestResponse;
 
         // Assert
-        Assert.NotNull(response);
-        Assert.False(response!.IsSuccessful);
+        response!.IsSuccessful.Should().BeFalse();
     }
 
     [Theory]
@@ -111,7 +110,6 @@ public class UnsuccessfulBuildersTests
         var response = method.Invoke(null, new object[] { errors }) as IRequestResponse;
 
         // Assert
-        Assert.Equal(expectedStatus.Message, response!.Status.Message);
-        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+        response!.Status.Should().BeEquivalentTo(expectedStatus);
     }
 }

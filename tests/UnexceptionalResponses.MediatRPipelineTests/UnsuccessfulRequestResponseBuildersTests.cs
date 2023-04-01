@@ -10,23 +10,31 @@ public class UnsuccessfulRequestResponseBuildersTests
     [Fact]
     public async void TestPipelineBehavour_WithTestRequest_ShouldInterruptRequest()
     {
+        // Arrange
         var mediator = GetMediator();
+
+        // Act
         var result = await mediator.Send(new TestRequest());
-        Assert.False(result.IsSuccessful);
-        Assert.Equal(ResponseStatus.Invalid.Message, result.Status.Message);
-        Assert.Equal(ResponseStatus.Invalid.StatusCode, result.Status.StatusCode);
-        Assert.NotEmpty(result.Errors);
+
+        // Assert
+        result.IsSuccessful.Should().BeFalse();
+        result.Status.Should().BeEquivalentTo(ResponseStatus.Invalid);
+        result.Errors.Should().NotBeEmpty();
     }
 
     [Fact]
     public async void TestPipelineBehavour_WithPagedTestRequest_ShouldInterruptRequest()
     {
+        // Arrange
         var mediator = GetMediator();
+
+        // Act
         var result = await mediator.Send(new PagedTestRequest());
-        Assert.False(result.IsSuccessful);
-        Assert.Equal(ResponseStatus.Invalid.Message, result.Status.Message);
-        Assert.Equal(ResponseStatus.Invalid.StatusCode, result.Status.StatusCode);
-        Assert.NotEmpty(result.Errors);
+
+        // Assert
+        result.IsSuccessful.Should().BeFalse();
+        result.Status.Should().BeEquivalentTo(ResponseStatus.Invalid);
+        result.Errors.Should().NotBeEmpty();
     }
 
     class TestContent { public int IntProperty { get; set; } }
@@ -36,6 +44,7 @@ public class UnsuccessfulRequestResponseBuildersTests
         public int IntRequestParameter { get; set; }
     }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     class TestRequestHandler : IRequestHandler<TestRequest, RequestResponse<TestContent>>
     {
         public async Task<RequestResponse<TestContent>> Handle(TestRequest request, CancellationToken cancellationToken)
@@ -56,7 +65,6 @@ public class UnsuccessfulRequestResponseBuildersTests
             return PagedRequestResponse.Ok(new TestContent(), new());
         }
     }
-
     class TestPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : IRequestResponse, new()
@@ -66,8 +74,9 @@ public class UnsuccessfulRequestResponseBuildersTests
             return CreateUnsuccessfulInstanceOf<TResponse>.WithInvalidStatus(new RequestError("A distinctive message"));
         }
     }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
-    private IMediator GetMediator()
+    private static IMediator GetMediator()
     {
         var testServer = new TestServer(new WebHostBuilder()
             .Configure(builder =>

@@ -3,6 +3,48 @@
 public class PagedPagedRequestResponseTests
 {
     [Fact]
+    public void Ok_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = PagedRequestResponse.Ok(responseContent, new());
+
+        // Assert
+        response.IsSuccessful.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Ok_WithArbitraryContent_ShouldHaveCorrectStatus()
+    {
+        // Arrange
+        var expectedStatus = ResponseStatus.Ok;
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = PagedRequestResponse.Ok(responseContent, new());
+
+        // Assert
+        response.Status.Should().BeEquivalentTo(expectedStatus);
+    }
+
+    [Fact]
+    public void Ok_WithArbitraryContent_ShouldHaveCorrectContent()
+    {
+        // Arrange
+        var responseContent = new ArbitraryResponseContent();
+
+        // Act
+        var response = PagedRequestResponse.Ok(responseContent, new());
+
+        // Assert
+        response.Content.Should().BeEquivalentTo(responseContent);
+    }
+
+
+    [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
     {
         // Arrange
@@ -13,10 +55,11 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Success(ResponseStatus.Ok, responseContent, pageMeta);
 
         // Assert
-        Assert.True(response.IsSuccessful);
+        response.IsSuccessful.Should().BeTrue();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithOkStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -28,10 +71,11 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Success(responseStatus, responseContent, pageMeta);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithCreatedStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -43,10 +87,12 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Success(responseStatus, responseContent, pageMeta);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithArbitraryContent_ShouldHaveNoErrors()
     {
         // Arrange
@@ -57,10 +103,11 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Success(ResponseStatus.Ok, responseContent, pageMeta);
 
         // Assert
-        Assert.Empty(response.Errors);
+        response.Errors.Should().BeEmpty();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithComparableResponseContent_ShouldHaveCorrectContent()
     {
         // Arrange
@@ -71,11 +118,12 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ComparableResponseContent>.Success(ResponseStatus.Ok, responseContent, pageMeta);
 
         // Assert
-        Assert.IsType<ComparableResponseContent>(response.Content);
-        Assert.Equal(responseContent, response.Content);
+        response.Content.Should().BeOfType<ComparableResponseContent>();
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithArbitraryContent_ShouldHaveFalseISuccessful()
     {
         // Arrange
@@ -90,10 +138,11 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.False(response.IsSuccessful);
+        response.IsSuccessful.Should().BeFalse();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithArbitraryContent_ShouldHaveNullContent()
     {
         // Arrange
@@ -112,6 +161,7 @@ public class PagedPagedRequestResponseTests
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithInvalidStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -126,10 +176,11 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithUnauthorizedStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -144,15 +195,16 @@ public class PagedPagedRequestResponseTests
         var response = PagedRequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithNoErrors_ShouldHaveEmptyErrors()
     {
         // Arrange
         var responseStatus = ResponseStatus.Unauthorized;
-        var errors = new RequestError[] { };
+        var errors = Array.Empty<RequestError>();
 
         // Act
         var response = PagedRequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
@@ -162,6 +214,7 @@ public class PagedPagedRequestResponseTests
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithErrors_ShouldHaveEmptyErrors()
     {
         // Arrange

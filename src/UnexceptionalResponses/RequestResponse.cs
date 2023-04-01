@@ -17,18 +17,27 @@ public class RequestResponse<TContent> : IRequestResponse
         Content = content;
     }
 
+    [Obsolete("Use RequestResponse.WithSuccessfulStatus instead")]
     public static RequestResponse<TContent> Success(IResponseStatus responseStatus, TContent content) => new(true, responseStatus, content: content);
+
+    [Obsolete("Use RequestResponse.WithFailedStatus instead")]
     public static RequestResponse<TContent> Failure(IResponseStatus responseStatus, RequestError[] errors) => new(false, responseStatus, errors: errors);
 }
 
 public static class RequestResponse
 {
+    public static RequestResponse<TContent> WithSuccessfulStatus<TContent>(IResponseStatus responseStatus, TContent content)
+        => new(true, responseStatus, content: content);
+
+    public static RequestResponse<TContent> WithFailedStatus<TContent>(IResponseStatus responseStatus, RequestError[] errors)
+        => new(false, responseStatus, errors: errors);
+
     public static RequestResponse<TContent> Ok<TContent>(TContent content)
-        => RequestResponse<TContent>.Success(ResponseStatus.Ok, content);
+        => WithSuccessfulStatus(ResponseStatus.Ok, content);
 
     public static RequestResponse<TContent> Created<TContent>(TContent content)
-        => RequestResponse<TContent>.Success(ResponseStatus.Created, content);
+        => WithSuccessfulStatus(ResponseStatus.Created, content);
 
     public static RequestResponse<TContent> Accepted<TContent>(TContent content)
-        => RequestResponse<TContent>.Success(ResponseStatus.Accepted, content);
+        => WithSuccessfulStatus(ResponseStatus.Accepted, content);
 }

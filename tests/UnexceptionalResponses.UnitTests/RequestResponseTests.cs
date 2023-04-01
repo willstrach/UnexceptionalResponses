@@ -12,7 +12,7 @@ public class RequestResponseTests
         var response = RequestResponse.Ok(responseContent);
 
         // Assert
-        Assert.True(response.IsSuccessful);
+        response.IsSuccessful.Should().BeTrue();
     }
 
     [Fact]
@@ -26,8 +26,7 @@ public class RequestResponseTests
         var response = RequestResponse.Ok(responseContent);
 
         // Assert
-        Assert.Equal(expectedStatus.Message, response.Status.Message);
-        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+        response.Status.Should().BeEquivalentTo(expectedStatus);
     }
 
     [Fact]
@@ -40,7 +39,7 @@ public class RequestResponseTests
         var response = RequestResponse.Ok(responseContent);
 
         // Assert
-        Assert.Equal(responseContent, response.Content);
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
@@ -53,7 +52,7 @@ public class RequestResponseTests
         var response = RequestResponse.Created(responseContent);
 
         // Assert
-        Assert.True(response.IsSuccessful);
+        response.IsSuccessful.Should().BeTrue();
     }
 
     [Fact]
@@ -67,8 +66,7 @@ public class RequestResponseTests
         var response = RequestResponse.Created(responseContent);
 
         // Assert
-        Assert.Equal(expectedStatus.Message, response.Status.Message);
-        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+        response.Status.Should().BeEquivalentTo(expectedStatus);
     }
 
     [Fact]
@@ -81,7 +79,7 @@ public class RequestResponseTests
         var response = RequestResponse.Created(responseContent);
 
         // Assert
-        Assert.Equal(responseContent, response.Content);
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
@@ -94,7 +92,7 @@ public class RequestResponseTests
         var response = RequestResponse.Accepted(responseContent);
 
         // Assert
-        Assert.True(response.IsSuccessful);
+        response.IsSuccessful.Should().BeTrue();
     }
 
     [Fact]
@@ -108,8 +106,7 @@ public class RequestResponseTests
         var response = RequestResponse.Accepted(responseContent);
 
         // Assert
-        Assert.Equal(expectedStatus.Message, response.Status.Message);
-        Assert.Equal(expectedStatus.StatusCode, response.Status.StatusCode);
+        response.Status.Should().BeEquivalentTo(expectedStatus);
     }
 
     [Fact]
@@ -122,10 +119,11 @@ public class RequestResponseTests
         var response = RequestResponse.Accepted(responseContent);
 
         // Assert
-        Assert.Equal(responseContent, response.Content);
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithArbitraryContent_ShouldHaveTrueIsSuccessful()
     {
         // Arrange
@@ -135,10 +133,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Success(ResponseStatus.Ok, responseContent);
 
         // Assert
-        Assert.True(response.IsSuccessful);
+        response.IsSuccessful.Should().BeTrue();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithOkStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -149,10 +148,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Success(responseStatus, responseContent);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithCreatedStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -163,10 +163,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Success(responseStatus, responseContent);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
        
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithArbitraryContent_ShouldHaveNoErrors()
     {
         // Arrange
@@ -176,10 +177,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Success(ResponseStatus.Ok, responseContent);
 
         // Assert
-        Assert.Empty(response.Errors);
+        response.Errors.Should().BeEmpty();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Success_WithComparableResponseContent_ShouldHaveCorrectContent()
     {
         // Arrange
@@ -189,11 +191,12 @@ public class RequestResponseTests
         var response = RequestResponse<ComparableResponseContent>.Success(ResponseStatus.Ok, responseContent);
 
         // Assert
-        Assert.IsType<ComparableResponseContent>(response.Content);
-        Assert.Equal(responseContent, response.Content);
+        response.Content.Should().BeOfType<ComparableResponseContent>();
+        response.Content.Should().BeEquivalentTo(responseContent);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithArbitraryContent_ShouldHaveFalseISuccessful()
     {
         // Arrange
@@ -208,10 +211,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.False(response.IsSuccessful);
+        response.IsSuccessful.Should().BeFalse();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithArbitraryContent_ShouldHaveNullContent()
     {
         // Arrange
@@ -226,10 +230,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.Null(response.Content);
+        response.Content.Should().BeNull();
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithInvalidStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -244,10 +249,11 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithUnauthorizedStatus_ShouldHaveCorrectStatus()
     {
         // Arrange
@@ -262,25 +268,27 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.Equal(responseStatus, response.Status);
+        response.Status.Should().BeEquivalentTo(responseStatus);
     }
 
     [Fact]
+    [Obsolete("Test kept for backwards compatibility")]
     public void Failure_WithNoErrors_ShouldHaveEmptyErrors()
     {
         // Arrange
         var responseStatus = ResponseStatus.Unauthorized;
-        var errors = new RequestError[] { };
+        var errors = Array.Empty<RequestError>();
 
         // Act
         var response = RequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.Empty(response.Errors);
+        response.Errors.Should().BeEmpty();
     }
 
     [Fact]
-    public void Failure_WithErrors_ShouldHaveEmptyErrors()
+    [Obsolete("Test kept for backwards compatibility")]
+    public void Failure_WithErrors_ShouldnOTHaveEmptyErrors()
     {
         // Arrange
         var responseStatus = ResponseStatus.Unauthorized;
@@ -294,8 +302,8 @@ public class RequestResponseTests
         var response = RequestResponse<ArbitraryResponseContent>.Failure(responseStatus, errors);
 
         // Assert
-        Assert.NotEmpty(response.Errors);
-        Assert.Equal(errors, response.Errors);
+        response.Errors.Should().NotBeEmpty();
+        response.Errors.Should().BeEquivalentTo(errors);
     }
 
     class ArbitraryResponseContent { }
