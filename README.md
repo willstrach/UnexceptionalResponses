@@ -23,9 +23,9 @@ The package's most simple response class, allowing arbitrary content to be passe
 ```csharp
 public class RequestResponse<TContent> : IRequestResponse
 {
-    public bool IsSuccessful { get; private set; }
-    public IResponseStatus Status { get; private set; }
-    public IRequestError[] Errors { get; private set; }
+    public bool IsSuccessful { get; set; }
+    public IResponseStatus Status { get; set; }
+    public IRequestError[] Errors { get; set; }
     public TContent? Content { get; set; }
 
     // ...
@@ -37,7 +37,8 @@ The response classes are designed to work cleanly with Mediatr with different re
 
 ```csharp
 public class MyPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TResponse : IRequest<TResponse> where TResponse : IRequestResponse
+        where TResponse : IRequest<TResponse>
+        where TResponse : IRequestResponse, new()
 {
     public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
@@ -45,7 +46,7 @@ public class MyPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
  
         if (somethingWentWrong)
         {
-            return ResultBuilder.CreateFailedInstanceOf<TResponse>(ResponseStatus.InternalError, requestErrors);
+            return CreateUnsuccessfulInstanceOf<TResponse>.WithInvalidStatus(requestErrors);
         }
 
         return await next();
